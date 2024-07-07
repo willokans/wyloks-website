@@ -16,11 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          ref: main
           fetch-depth: 0
-
-      - name: Fetch all branches
-        run: git fetch --all
 
       - name: Fetch dev branch
         run: git fetch origin dev
