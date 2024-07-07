@@ -18,14 +18,23 @@ jobs:
         with:
           ref: main
 
+      - name: Fetch dev branch
+        run: git fetch origin dev
+
+      - name: Check for changes between main and dev
+        id: check_changes
+        run: |
+          DIFF=$(git diff --name-only main origin/dev)
+          echo "::set-output name=has_changes::$(if [ -n "$DIFF" ]; then echo "true"; else echo "false"; fi)"
+
       - name: Merge dev into main (if changes exist)
+        if: ${{ steps.check_changes.outputs.has_changes == 'true' }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch origin dev
-          git diff --quiet origin/dev || git merge --no-ff --no-edit origin/dev
+          git merge --no-ff --no-edit origin/dev
 
       - name: Push changes to main
-        if: ${{ !github.event_name == 'workflow_dispatch' }}
+        if: ${{ steps.check_changes.outputs.has_changes == 'true' }}
         run: |
           git push origin main
