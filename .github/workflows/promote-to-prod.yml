@@ -37,4 +37,4 @@ jobs:
       - name: Push changes to main
         if: ${{ steps.check_changes.outputs.has_changes == 'true' }}
         run: |
-          git push origin main
+          git push https://${{ secrets.GH_PAT }}@github.com/willokans/wyloks-website.git main
