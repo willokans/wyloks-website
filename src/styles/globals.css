@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom global styles can be added here */
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Styles for desktop */
+.container {
+    width: 80%;
+    margin: auto;
+}
+
+/* Styles for tablet */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+}
+
+/* Styles for mobile */
+@media (max-width: 480px) {
+    .container {
+        width: 100%;
+    }
+}
+
+nav {
+    display: flex;
+}
+
+nav {
+    flex-direction: column;
+}
