@@ -1,6 +1,7 @@
 name: Promote to Production
 
 on:
+  workflow_dispatch: # Allows manual triggering of the workflow
   workflow_run:
     workflows: ["Deploy to Vercel"]
     branches: ["dev"]
