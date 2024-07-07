@@ -27,6 +27,15 @@ jobs:
           DIFF=$(git diff --name-only main origin/dev)
           echo "::set-output name=has_changes::$(if [ -n "$DIFF" ]; then echo "true"; else echo "false"; fi)"
 
+      - name: Fetch dev branch
+        run: git fetch origin dev
+
+      - name: Check for changes between main and dev
+        id: check_changes
+        run: |
+          DIFF=$(git diff --name-only main origin/dev)
+          echo "::set-output name=has_changes::$(if [ -n "$DIFF" ]; then echo "true"; else echo "false"; fi)"
+
       - name: Merge dev into main (if changes exist)
         if: ${{ steps.check_changes.outputs.has_changes == 'true' }}
         run: |
