@@ -1,21 +1,22 @@
-import Link from 'next/link';
+'use client';
 
-const Header = () => {
+import React from 'react';
+import Link from 'next/link';
+import Navigation from './Navigation';
+
+const Header: React.FC = () => {
   return (
-    <header className="bg-gray-800 text-white p-4">
-      <div className="container mx-auto flex flex-wrap justify-between items-center">
-        <div className="text-lg font-bold">Wyloks Ltd</div>
-        <ul className="flex space-x-4">
-          <li>
-            <Link href="/">Home</Link>
-          </li>
-          <li>
-            <Link href="/about">About</Link>
-          </li>
-          <li>
-            <Link href="/contact">Contact</Link>
-          </li>
-        </ul>
+    <header className="fixed w-full bg-white shadow-md z-50">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <Link href="/" className="flex items-center space-x-1">
+            <span className="text-xl sm:text-2xl font-bold text-gray-900">Wyloks</span>
+            <span className="text-xl sm:text-2xl font-light text-purple-600">Ltd</span>
+          </Link>
+
+          <Navigation />
+        </div>
       </div>
     </header>
   );
