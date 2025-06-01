@@ -10,7 +10,7 @@ const ServicesContent = dynamic(() => import('@/components/ServicesContent'), {
 });
 
 export const metadata: Metadata = {
-  title: 'Our Services | Wyloks Ltd',
+  title: 'Our Services | Wyloks',
   description: 'Explore our comprehensive IT consultation services, software development solutions, and digital marketing strategies.',
 };
 

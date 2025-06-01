@@ -171,3 +171,136 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 📞 Support
 
 For support, contact support@wyloksltd.com or open an issue.
+
+## 🍪 Cookie Policy Implementation
+
+### Overview
+The website implements a comprehensive cookie consent management system that respects user privacy and complies with data protection regulations.
+
+### Key Features
+- **Granular Cookie Control**: Users can:
+  - Accept all cookies
+  - Reject non-essential cookies
+  - Customize their preferences
+  - Change preferences at any time
+  
+- **Cookie Types**:
+  - Essential: Always enabled, required for basic functionality
+  - Analytics: Optional, for website usage analysis
+  - Marketing: Optional, for targeted advertising
+
+### Implementation Details
+
+#### 1. Cookie Consent Hook (`useCookieConsent.ts`)
+```typescript
+// Manages cookie preferences and provides utilities
+interface CookiePreferences {
+  essential: boolean;  // Always true
+  analytics: boolean;  // Optional
+  marketing: boolean;  // Optional
+}
+```
+
+#### 2. Cookie Consent Banner (`CookieConsent.tsx`)
+- First-time visitors see a consent banner
+- Clear options for accepting, rejecting, or customizing
+- Preferences stored in localStorage
+- Responsive design for all devices
+
+#### 3. Analytics Integration (`SiteAnalytics.tsx`)
+- Respects user preferences
+- Only loads if analytics cookies are accepted
+- Automatically removes analytics cookies when rejected
+
+#### 4. Cookie Policy Page (`/cookie-policy`)
+- Detailed information about cookie usage
+- Clear explanations of each cookie type
+- Instructions for managing cookie preferences
+
+### User Privacy Protection
+- Essential cookies are limited to necessary functionality
+- Non-essential cookies require explicit consent
+- Analytics and marketing features are disabled by default
+- User preferences are preserved between sessions
+- Clear instructions for managing cookies through browser settings
+
+### Technical Implementation
+```typescript
+// Example of conditional analytics loading
+if (canUseAnalytics) {
+  // Load analytics scripts
+} else {
+  // Remove analytics cookies
+  removeAnalyticsCookies();
+}
+```
+
+### Testing Cookies
+To test cookie functionality:
+1. Clear browser cookies and localStorage
+2. Visit the website in a fresh session
+3. Verify cookie banner appears
+4. Test different consent options
+5. Confirm analytics load only with consent
+
+### Cookie Expiration
+- Essential Cookies: Session-based or up to 24 hours
+- Analytics Cookies: 6 months (if accepted)
+- Marketing Cookies: 6 months (if accepted)
+- Cache Files: Up to 1 year (31536000 seconds)
+
+## 🍪 Cookie Policy Implementation
+
+### Overview
+Our cookie management system provides users with granular control over their cookie preferences while ensuring compliance with privacy regulations. The implementation uses React hooks and local storage for persistent preferences.
+
+### Features
+- Essential cookies (always enabled for core functionality)
+- Optional analytics cookies for site improvement
+- Optional marketing cookies for personalized content
+- Persistent user preferences via local storage
+- Clear consent UI with granular controls
+- Easy preference restoration
+
+### Key Components
+
+#### `useCookieConsent` Hook
+Located in `src/hooks/useCookieConsent.ts`, this custom hook manages cookie preferences:
+```typescript
+interface CookiePreferences {
+  essential: boolean;  // Always true, required for site function
+  analytics: boolean;  // User-configurable
+  marketing: boolean;  // User-configurable
+}
+```
+
+#### `CookieConsent` Component
+Located in `src/components/CookieConsent.tsx`, provides the UI for:
+- Initial consent prompt
+- Granular preference controls
+- Accept/Reject all buttons
+- Preference restoration
+
+#### Integration with Analytics
+The `SiteAnalytics` component respects user preferences:
+- Loads analytics only with user consent
+- Handles preference changes dynamically
+- Maintains essential functionality when analytics are rejected
+
+### Usage
+```typescript
+// In your component:
+const { preferences, updatePreferences, loaded } = useCookieConsent();
+
+// Check if specific cookie types are allowed:
+if (preferences.analytics) {
+  // Load analytics
+}
+```
+
+### Best Practices
+1. Always check cookie consent before loading optional features
+2. Keep essential cookies to a minimum
+3. Respect user preferences immediately upon changes
+4. Provide clear documentation of cookie purposes
+5. Include obvious UI for updating preferences

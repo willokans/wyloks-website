@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
+import CookieConsent from './CookieConsent';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
@@ -22,6 +23,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         {children}
       </main>
       <Footer />
+      <CookieConsent />
     </div>
   );
 }

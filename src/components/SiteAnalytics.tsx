@@ -3,18 +3,24 @@
 import Script from 'next/script';
 import { useEffect } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { useCookieConsent } from '@/hooks/useCookieConsent';
 
 export function SiteAnalytics() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { canUseAnalytics } = useCookieConsent();
 
   useEffect(() => {
+    if (!canUseAnalytics) return;
+
     // Track page views
     const url = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : '');
     window.gtag?.('config', 'G-XXXXXXXXXX', {
       page_path: url,
     });
-  }, [pathname, searchParams]);
+  }, [pathname, searchParams, canUseAnalytics]);
+
+  if (!canUseAnalytics) return null;
 
   return (
     <>
