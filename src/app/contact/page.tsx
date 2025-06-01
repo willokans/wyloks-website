@@ -1,8 +1,8 @@
 import ContactForm from '@/components/ContactForm';
 
 export const metadata = {
-  title: 'Contact Us | Wyloks Ltd',
-  description: 'Get in touch with Wyloks Ltd for IT consultation and services.',
+  title: 'Contact Us | Wyloks',
+  description: 'Get in touch with Wyloks for IT consultation and services.',
 };
 
 export default function ContactPage() {
