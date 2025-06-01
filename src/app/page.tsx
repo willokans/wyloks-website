@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Home | Wyloks Ltd',
-  description: 'Welcome to Wyloks Ltd - Your trusted partner for IT consultation and services.',
+  title: 'Home | Wyloks',
+  description: 'Welcome to Wyloks - Your trusted partner for IT consultation and services.',
 };
 
 export default function HomePage() {
@@ -12,7 +12,7 @@ export default function HomePage() {
       <section className="pt-16 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 to-white">
         <div className="container mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-            Welcome to <span className="text-purple-600">Wyloks Ltd</span>
+            Welcome to <span className="text-purple-600">Wyloks</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
             We help businesses grow their online presence through strategic IT consultation,

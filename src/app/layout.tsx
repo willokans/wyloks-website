@@ -13,8 +13,8 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.wyloksltd.com'),
   title: {
-    template: '%s | Wyloks Ltd',
-    default: 'Wyloks Ltd - IT Consultation & Services',
+    template: '%s | Wyloks',
+    default: 'Wyloks - IT Consultation & Services',
   },
   description: 'Professional IT consultation and services for businesses.',
   keywords: ['IT Consultation', 'Software Development', 'Digital Marketing', 'Affiliate Marketing'],

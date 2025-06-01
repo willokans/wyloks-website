@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import LoadingSpinner from './LoadingSpinner';
 import { contactSchema } from '@/lib/validation';
+import { useRecaptcha } from '@/hooks/useRecaptcha';
 import { z } from 'zod';
 
 type FormFields = 'name' | 'email' | 'phone' | 'subject' | 'message' | 'recaptcha';
@@ -26,6 +27,7 @@ export const subjects = [
 ] as const;
 
 export const ContactForm = () => {
+  const { recaptchaRef, executeRecaptcha, resetRecaptcha } = useRecaptcha();
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -46,7 +48,6 @@ export const ContactForm = () => {
     recaptcha: false
   });
   const [remainingChars, setRemainingChars] = useState(1000);
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -95,65 +96,36 @@ export const ContactForm = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     setErrorMessage('');
     setValidationErrors({});
 
-    // Set all fields as touched
-    setTouched({
-      name: true,
-      email: true,
-      phone: true,
-      subject: true,
-      message: true,
-      recaptcha: true
-    });
-
     try {
-      // Get reCAPTCHA token
-      const recaptchaToken = await recaptchaRef.current?.executeAsync();
-      if (!recaptchaToken) {
-        setValidationErrors(prev => ({ ...prev, recaptcha: 'Please complete the reCAPTCHA verification' }));
+      const recaptchaValue = await executeRecaptcha();
+      if (!recaptchaValue) {
+        setErrorMessage('Please complete the reCAPTCHA verification');
         setIsSubmitting(false);
         return;
       }
 
-      // Validate all form data
-      contactSchema.parse({
-        ...formData,
-        recaptchaToken
-      });
-
+      const validatedData = contactSchema.parse(formData);
+      
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ...formData,
-          recaptchaToken
+          ...validatedData,
+          recaptchaToken: recaptchaValue,
         }),
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        if (data.errors) {
-          setValidationErrors(data.errors as ValidationErrors);
-          setErrorMessage('Please correct the errors in the form.');
-        } else {
-          throw new Error(data.message || 'Failed to send message');
-        }
-        return;
+        throw new Error('Failed to send message');
       }
-
-      // Track successful form submission
-      window.gtag?.('event', 'form_submission', {
-        event_category: 'Contact',
-        event_label: formData.subject,
-      });
 
       setShowSuccessMessage(true);
       setFormData({
@@ -163,29 +135,19 @@ export const ContactForm = () => {
         subject: '',
         message: ''
       });
-      setTouched({
-        name: false,
-        email: false,
-        phone: false,
-        subject: false,
-        message: false,
-        recaptcha: false
-      });
-      recaptchaRef.current?.reset();
+      resetRecaptcha();
       
     } catch (error) {
       if (error instanceof z.ZodError) {
-        const errors = error.errors.reduce((acc, curr) => {
-          const path = curr.path[0];
-          if (typeof path === 'string') {
-            acc[path as FormFields] = curr.message;
+        const errors: ValidationErrors = {};
+        error.errors.forEach((err) => {
+          if (err.path[0]) {
+            errors[err.path[0] as FormFields] = err.message;
           }
-          return acc;
-        }, {} as ValidationErrors);
+        });
         setValidationErrors(errors);
-        setErrorMessage('Please correct the errors in the form.');
       } else {
-        setErrorMessage(error instanceof Error ? error.message : 'Failed to send message. Please try again later.');
+        setErrorMessage('An error occurred. Please try again later.');
       }
     } finally {
       setIsSubmitting(false);
@@ -375,25 +337,8 @@ export const ContactForm = () => {
           ref={recaptchaRef}
           size="normal"
           sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
-          onChange={() => {
-            if (validationErrors.recaptcha) {
-              setValidationErrors(prev => {
-                const newErrors = { ...prev };
-                delete newErrors.recaptcha;
-                return newErrors;
-              });
-            }
-          }}
         />
       </div>
-      {validationErrors.recaptcha && (
-        <p className="mt-1 text-sm text-red-600 flex items-center justify-center">
-          <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-          </svg>
-          {validationErrors.recaptcha}
-        </p>
-      )}
 
       {/* Submit Button */}
       <div className="flex justify-center sm:justify-end pt-4">

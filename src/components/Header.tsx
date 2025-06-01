@@ -12,7 +12,6 @@ const Header: React.FC = () => {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-1">
             <span className="text-xl sm:text-2xl font-bold text-gray-900">Wyloks</span>
-            <span className="text-xl sm:text-2xl font-light text-purple-600">Ltd</span>
           </Link>
 
           <Navigation />

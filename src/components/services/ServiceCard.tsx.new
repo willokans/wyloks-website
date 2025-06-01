@@ -3,9 +3,12 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { type ServiceProps, type IconType } from '@/types/services';
+import { type ServiceItem } from '@/lib/constants';
 
-const icons: Record<IconType, React.ComponentType> = {
+type ServiceCardProps = ServiceItem;
+
+// Dynamically import icons
+const icons = {
   ITConsulting: dynamic(() => import('./ServiceIcons').then(mod => mod.ITConsultingIcon), {
     loading: () => <LoadingSpinner />,
     ssr: false
@@ -18,9 +21,9 @@ const icons: Record<IconType, React.ComponentType> = {
     loading: () => <LoadingSpinner />,
     ssr: false
   })
-};
+} as const;
 
-export default function ServiceCard({ title, description, iconType }: ServiceProps) {
+export default function ServiceCard({ title, description, iconType }: ServiceCardProps) {
   const Icon = icons[iconType];
 
   return (

@@ -11,10 +11,10 @@ export default function AboutPageContent() {
         <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-purple-50 opacity-80" />
         <div className="container relative mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6">
-            About <span className="text-purple-600">Wyloks Ltd</span>
+            About <span className="text-purple-600">Wyloks</span>
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Wyloks Ltd is a registered UK company focused on helping businesses succeed online. 
+            Wyloks is a registered UK company focused on helping businesses succeed online. 
             We specialize in IT consultation, software development, and performance-driven marketing strategies.
           </p>
         </div>
