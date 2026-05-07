@@ -17,6 +17,13 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+          repository: willokans/wyloks-website
+          ssh-strict: true
+          persist-credentials: true
+          clean: true
+          lfs: false
+          submodules: false
+          set-safe-directory: true
           token: ${{ secrets.GH_PAT }}
 
       - name: Fetch dev branch
