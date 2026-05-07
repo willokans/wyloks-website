@@ -73,9 +73,8 @@ export const ContactForm = () => {
 
     // Validate field on blur
     try {
-      const schema = name === 'phone' 
-        ? contactSchema.shape.phone
-        : contactSchema.shape[name as keyof Omit<FormData, 'phone'>];
+      const clientSchema = contactSchema.omit({ recaptchaToken: true });
+      const schema = clientSchema.shape[name as keyof typeof clientSchema.shape];
       
       schema.parse(formData[name as keyof FormData]);
       
@@ -110,7 +109,7 @@ export const ContactForm = () => {
         return;
       }
 
-      const validatedData = contactSchema.parse(formData);
+      const validatedData = contactSchema.omit({ recaptchaToken: true }).parse(formData);
       
       const response = await fetch('/api/contact', {
         method: 'POST',
@@ -154,185 +153,128 @@ export const ContactForm = () => {
     }
   };
 
+  const fieldBase = `mt-1 block w-full font-body text-sm px-3 py-3 transition-colors duration-200 border focus:outline-none`;
+  const fieldNormal = `${fieldBase} border-ink/20 focus:border-ink/50`;
+  const fieldError  = `${fieldBase} border-red-400 focus:border-red-500`;
+  const fieldStyle  = { backgroundColor: 'var(--cream-dark)', color: 'var(--ink)' };
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 bg-white rounded-xl shadow-sm p-6 sm:p-8">
-      {/* Messages */}
+    <form onSubmit={handleSubmit} className="space-y-7">
+
       {showSuccessMessage && (
-        <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-purple-50 text-purple-700 rounded-lg text-sm sm:text-base border border-purple-200">
-          <div className="flex items-center">
-            <svg className="w-5 h-5 mr-2 text-purple-500" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-              <path d="M5 13l4 4L19 7"></path>
-            </svg>
-            Thank you for your message! We&apos;ll get back to you soon.
-          </div>
+        <div className="p-4 border text-sm" style={{ borderColor: 'var(--terra)', color: 'var(--terra)', backgroundColor: 'rgba(201,98,47,0.05)' }}>
+          Thank you for your message — we&apos;ll be in touch within 24 hours.
         </div>
       )}
       {errorMessage && (
-        <div className="mb-6 p-4 bg-red-50 text-red-700 rounded-lg border border-red-200">
-          <div className="flex items-center">
-            <svg className="w-5 h-5 mr-2 text-red-500" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-              <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            {errorMessage}
-          </div>
+        <div className="p-4 border border-red-300 text-sm text-red-700 bg-red-50">
+          {errorMessage}
         </div>
       )}
 
-      {/* Name Field */}
-      <div>
-        <label htmlFor="name" className="block text-sm sm:text-base font-medium text-gray-700">
-          Name <span className="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          className={`mt-1 block w-full rounded-md shadow-sm text-base sm:text-lg p-2 sm:p-3 transition-colors duration-200 ${
-            touched.name && validationErrors.name 
-              ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
-              : 'border-gray-300 hover:border-purple-300 focus:border-purple-500 focus:ring-purple-500'
-          }`}
-        />
-        {touched.name && validationErrors.name && (
-          <p className="mt-1 text-sm text-red-600 flex items-center">
-            <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-            </svg>
-            {validationErrors.name}
-          </p>
-        )}
+      {/* Name + Email — side by side on sm+ */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div>
+          <label htmlFor="name" className="block font-mono text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--ink-muted)' }}>
+            Name <span style={{ color: 'var(--terra)' }}>*</span>
+          </label>
+          <input
+            type="text" id="name" name="name"
+            value={formData.name} onChange={handleChange} onBlur={handleBlur}
+            className={touched.name && validationErrors.name ? fieldError : fieldNormal}
+            style={fieldStyle}
+          />
+          {touched.name && validationErrors.name && (
+            <p className="mt-1 text-xs" style={{ color: 'var(--terra)' }}>{validationErrors.name}</p>
+          )}
+        </div>
+
+        <div>
+          <label htmlFor="email" className="block font-mono text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--ink-muted)' }}>
+            Email <span style={{ color: 'var(--terra)' }}>*</span>
+          </label>
+          <input
+            type="email" id="email" name="email"
+            value={formData.email} onChange={handleChange} onBlur={handleBlur}
+            className={touched.email && validationErrors.email ? fieldError : fieldNormal}
+            style={fieldStyle}
+          />
+          {touched.email && validationErrors.email && (
+            <p className="mt-1 text-xs" style={{ color: 'var(--terra)' }}>{validationErrors.email}</p>
+          )}
+        </div>
       </div>
 
-      {/* Email Field */}
+      {/* Phone */}
       <div>
-        <label htmlFor="email" className="block text-sm sm:text-base font-medium text-gray-700">
-          Email <span className="text-red-500">*</span>
+        <label htmlFor="phone" className="block font-mono text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--ink-muted)' }}>
+          Phone <span className="normal-case font-body text-xs" style={{ color: 'var(--ink-muted)' }}>(optional)</span>
         </label>
         <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          className={`mt-1 block w-full rounded-md shadow-sm text-base sm:text-lg p-2 sm:p-3 transition-colors duration-200 ${
-            touched.email && validationErrors.email 
-              ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
-              : 'border-gray-300 hover:border-purple-300 focus:border-purple-500 focus:ring-purple-500'
-          }`}
-        />
-        {touched.email && validationErrors.email && (
-          <p className="mt-1 text-sm text-red-600 flex items-center">
-            <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-            </svg>
-            {validationErrors.email}
-          </p>
-        )}
-      </div>
-
-      {/* Phone Field */}
-      <div>
-        <label htmlFor="phone" className="block text-sm sm:text-base font-medium text-gray-700">
-          Phone Number <span className="text-gray-500">(Optional)</span>
-        </label>
-        <input
-          type="tel"
-          id="phone"
-          name="phone"
-          value={formData.phone}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          placeholder="+1 (555) 555-5555"
-          className={`mt-1 block w-full rounded-md shadow-sm text-base sm:text-lg p-2 sm:p-3 transition-colors duration-200 ${
-            touched.phone && validationErrors.phone 
-              ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
-              : 'border-gray-300 hover:border-purple-300 focus:border-purple-500 focus:ring-purple-500'
-          }`}
+          type="tel" id="phone" name="phone"
+          value={formData.phone} onChange={handleChange} onBlur={handleBlur}
+          placeholder="+44 7XXX XXX XXX"
+          className={touched.phone && validationErrors.phone ? fieldError : fieldNormal}
+          style={fieldStyle}
         />
         {touched.phone && validationErrors.phone && (
-          <p className="mt-1 text-sm text-red-600 flex items-center">
-            <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-            </svg>
-            {validationErrors.phone}
-          </p>
+          <p className="mt-1 text-xs" style={{ color: 'var(--terra)' }}>{validationErrors.phone}</p>
         )}
       </div>
 
-      {/* Subject Field */}
+      {/* Subject */}
       <div>
-        <label htmlFor="subject" className="block text-sm sm:text-base font-medium text-gray-700">
-          Subject <span className="text-red-500">*</span>
+        <label htmlFor="subject" className="block font-mono text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--ink-muted)' }}>
+          Subject <span style={{ color: 'var(--terra)' }}>*</span>
         </label>
-        <select
-          id="subject"
-          name="subject"
-          value={formData.subject}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          className={`mt-1 block w-full rounded-md shadow-sm text-base sm:text-lg p-2 sm:p-3 transition-colors duration-200 ${
-            touched.subject && validationErrors.subject 
-              ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
-              : 'border-gray-300 hover:border-purple-300 focus:border-purple-500 focus:ring-purple-500'
-          }`}
-        >
-          <option value="">Select a subject</option>
-          {subjects.map(subject => (
-            <option key={subject} value={subject}>{subject}</option>
-          ))}
-        </select>
-        {touched.subject && validationErrors.subject && (
-          <p className="mt-1 text-sm text-red-600 flex items-center">
-            <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+        <div className="relative mt-1">
+          <select
+            id="subject" name="subject"
+            value={formData.subject} onChange={handleChange} onBlur={handleBlur}
+            className={`appearance-none pr-10 block w-full font-body text-sm px-3 py-3 transition-colors duration-200 border focus:outline-none ${
+              touched.subject && validationErrors.subject
+                ? 'border-red-400 focus:border-red-500'
+                : 'border-ink/20 focus:border-ink/50'
+            }`}
+            style={{ ...fieldStyle, color: formData.subject ? 'var(--ink)' : 'var(--ink-muted)' }}
+          >
+            <option value="">Select a subject</option>
+            {subjects.map(s => <option key={s} value={s}>{s}</option>)}
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+            <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: 'var(--ink-muted)' }}>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
             </svg>
-            {validationErrors.subject}
-          </p>
+          </div>
+        </div>
+        {touched.subject && validationErrors.subject && (
+          <p className="mt-1 text-xs" style={{ color: 'var(--terra)' }}>{validationErrors.subject}</p>
         )}
       </div>
 
-      {/* Message Field */}
+      {/* Message */}
       <div>
-        <label htmlFor="message" className="block text-sm sm:text-base font-medium text-gray-700">
-          Message <span className="text-red-500">*</span>
+        <label htmlFor="message" className="block font-mono text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--ink-muted)' }}>
+          Message <span style={{ color: 'var(--terra)' }}>*</span>
         </label>
         <textarea
-          id="message"
-          name="message"
-          rows={6}
-          value={formData.message}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          className={`mt-1 block w-full rounded-md shadow-sm text-base sm:text-lg p-2 sm:p-3 transition-colors duration-200 ${
-            touched.message && validationErrors.message 
-              ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
-              : 'border-gray-300 hover:border-purple-300 focus:border-purple-500 focus:ring-purple-500'
-          }`}
+          id="message" name="message" rows={6}
+          value={formData.message} onChange={handleChange} onBlur={handleBlur}
+          className={touched.message && validationErrors.message ? fieldError : fieldNormal}
+          style={fieldStyle}
         />
-        <div className="mt-1 flex justify-between items-center">
-          <span className={`text-sm ${remainingChars < 0 ? 'text-red-600' : 'text-gray-500'} flex items-center`}>
-            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-            </svg>
+        <div className="mt-1.5 flex justify-between items-center">
+          <span className="font-mono text-xs" style={{ color: remainingChars < 0 ? 'var(--terra)' : 'var(--ink-muted)' }}>
             {remainingChars} characters remaining
           </span>
           {touched.message && validationErrors.message && (
-            <p className="text-sm text-red-600 flex items-center">
-              <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-              </svg>
-              {validationErrors.message}
-            </p>
+            <p className="text-xs" style={{ color: 'var(--terra)' }}>{validationErrors.message}</p>
           )}
         </div>
       </div>
 
       {/* reCAPTCHA */}
-      <div className="flex justify-center">
+      <div>
         <ReCAPTCHA
           ref={recaptchaRef}
           size="normal"
@@ -340,30 +282,25 @@ export const ContactForm = () => {
         />
       </div>
 
-      {/* Submit Button */}
-      <div className="flex justify-center sm:justify-end pt-4">
+      {/* Submit */}
+      <div className="pt-2">
         <button
           type="submit"
           disabled={isSubmitting}
-          className={`
-            inline-flex items-center px-4 sm:px-6 py-2.5 sm:py-3 border border-transparent 
-            text-sm sm:text-base font-medium rounded-md shadow-sm text-white w-full sm:w-auto
-            ${isSubmitting 
-              ? 'bg-gray-400 cursor-not-allowed' 
-              : 'bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200'
-            }
-          `}
+          className="btn-ink w-full sm:w-auto"
+          style={isSubmitting ? { backgroundColor: 'var(--ink-muted)', color: 'var(--cream)', cursor: 'not-allowed' } : { backgroundColor: 'var(--terra)', color: 'var(--cream)' }}
         >
           {isSubmitting ? (
-            <>
-              <LoadingSpinner className="h-5 w-5 mr-2" />
-              Sending...
-            </>
+            <span className="flex items-center gap-2">
+              <LoadingSpinner className="h-4 w-4" />
+              Sending…
+            </span>
           ) : (
             'Send Message'
           )}
         </button>
       </div>
+
     </form>
   );
 };

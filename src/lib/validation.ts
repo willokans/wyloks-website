@@ -6,9 +6,10 @@ export const contactSchema = z.object({
     .max(50, 'Name must not exceed 50 characters'),
   email: z.string()
     .email('Please enter a valid email address'),
-  phone: z.string()
-    .regex(/^(\+?\d{1,3}[-.]?)?\s*\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/, 'Please enter a valid phone number')
-    .optional(),
+  phone: z.union([
+    z.literal(''),
+    z.string().regex(/^(\+?\d{1,3}[-.]?)?\s*\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/, 'Please enter a valid phone number'),
+  ]).optional(),
   subject: z.string()
     .min(1, 'Please select a subject'),
   message: z.string()

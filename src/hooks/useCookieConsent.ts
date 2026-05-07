@@ -17,9 +17,9 @@ const defaultPreferences: CookiePreferences = {
 export function useCookieConsent() {
   const [preferences, setPreferences] = useState<CookiePreferences>(defaultPreferences);
   const [loaded, setLoaded] = useState(false);
+  const [consentGiven, setConsentGiven] = useState(false);
 
   useEffect(() => {
-    // Load preferences from localStorage
     const storedPreferences = localStorage.getItem('cookie-preferences');
     if (storedPreferences) {
       try {
@@ -27,8 +27,9 @@ export function useCookieConsent() {
         setPreferences({
           ...defaultPreferences,
           ...parsed,
-          essential: true, // Always ensure essential is true
+          essential: true,
         });
+        setConsentGiven(true);
       } catch (e) {
         console.error('Error parsing cookie preferences:', e);
         setPreferences(defaultPreferences);
@@ -44,6 +45,7 @@ export function useCookieConsent() {
       essential: true, // Essential cookies can't be disabled
     };
     setPreferences(updated);
+    setConsentGiven(true);
     localStorage.setItem('cookie-preferences', JSON.stringify(updated));
 
     // If analytics is rejected, remove analytics cookies
@@ -76,8 +78,9 @@ export function useCookieConsent() {
   return {
     preferences,
     loaded,
+    consentGiven,
     updatePreferences,
-    hasConsented: loaded && preferences.essential, // At minimum, essential cookies are accepted
+    hasConsented: loaded && preferences.essential,
     canUseAnalytics: loaded && preferences.analytics,
     canUseMarketing: loaded && preferences.marketing,
   };

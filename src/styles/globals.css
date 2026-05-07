@@ -2,49 +2,144 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom global styles */
+/* ── Design tokens ── */
 :root {
-  --primary-color: #9333EA; /* purple-600 */
-  --secondary-color: #F3F4F6; /* gray-100 */
+  --cream:      #f5f1ea;
+  --cream-dark: #ece7de;
+  --ink:        #16120b;
+  --ink-mid:    #241e15;
+  --ink-soft:   #3d3528;
+  --ink-muted:  #7a6e60;
+  --terra:      #c9622f;
+  --terra-dark: #a8461e;
+  --border:     #d9d3c8;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* ── Base ── */
+html { scroll-behavior: smooth; }
 
 body {
-  @apply antialiased bg-white text-gray-900;
+  @apply antialiased;
+  background-color: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
 }
 
-/* Container responsive sizing is handled by Tailwind */
-.container {
-  @apply mx-auto px-4 sm:px-6 lg:px-8;
+/* ── Display type (Cormorant) ── */
+.display-hero {
+  font-family: var(--font-display), Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.025em;
 }
 
-/* Add smooth transitions */
-.transition-all {
-  @apply duration-300 ease-in-out;
+.display-section {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
 }
 
-/* Button styles */
-.btn {
-  @apply inline-flex items-center px-6 py-3 rounded-full font-medium transition-all;
+/* ── Section label ── */
+.label-tag {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--terra);
 }
 
-.btn-primary {
-  @apply bg-purple-600 text-white hover:bg-purple-700 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2;
+/* ── Dividers ── */
+.rule      { display: block; width: 100%; height: 1px; background-color: rgba(22,18,11,0.12); }
+.rule-dark { display: block; width: 100%; height: 1px; background-color: rgba(245,241,234,0.12); }
+
+/* ── Buttons ── */
+.btn-ink {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0.75rem 1.75rem;
+  background-color: var(--ink);
+  color: var(--cream);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.btn-ink:hover { background-color: var(--terra); }
+
+.btn-outline {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0.75rem 1.75rem;
+  border: 1px solid rgba(22,18,11,0.3);
+  color: var(--ink);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.btn-outline:hover { border-color: var(--terra); background-color: rgba(201,98,47,0.06); }
+
+/* ── Nav link with animated underline ── */
+.nav-link {
+  position: relative;
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: color 0.2s ease;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 1px;
+  background-color: var(--terra);
+  transition: width 0.25s ease;
+}
+.nav-link:hover         { color: var(--ink); }
+.nav-link:hover::after  { width: 100%; }
+.nav-link.active        { color: var(--ink); }
+.nav-link.active::after { width: 100%; }
+
+/* ── Cards ── */
+.card-editorial {
+  border: 1px solid rgba(22,18,11,0.1);
+  background-color: var(--cream);
+  padding: 2rem;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+.card-editorial:hover {
+  border-color: rgba(22,18,11,0.22);
+  background-color: var(--cream-dark);
 }
 
-.btn-secondary {
-  @apply border border-purple-600 text-purple-600 hover:bg-purple-50;
+.card-dark {
+  border: 1px solid rgba(245,241,234,0.1);
+  padding: 2rem;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+.card-dark:hover {
+  border-color: rgba(245,241,234,0.2);
+  background-color: rgba(245,241,234,0.04);
 }
 
-/* Heading styles */
-h1, h2, h3, h4, h5, h6 {
-  @apply font-bold leading-tight;
+/* ── Inline text link (dark bg) ── */
+.link-terra {
+  color: var(--ink);
+  transition: color 0.2s ease;
+  text-decoration: none;
 }
+.link-terra:hover { color: var(--terra); }
 
-/* Custom section padding */
-.section {
-  @apply py-16 sm:py-20 lg:py-24;
+/* ── Number display ── */
+.num-display {
+  font-family: var(--font-display), Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--terra);
+  line-height: 1;
 }

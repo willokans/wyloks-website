@@ -3,105 +3,123 @@
 import React from 'react';
 import Link from 'next/link';
 
+const values = [
+  {
+    num: '01',
+    title: 'Innovation',
+    body: 'We constantly evolve and adapt to new technologies to provide cutting-edge solutions for every client.',
+  },
+  {
+    num: '02',
+    title: 'Excellence',
+    body: 'We strive for excellence in every project, delivering high-quality work that outlasts the engagement.',
+  },
+  {
+    num: '03',
+    title: 'Integrity',
+    body: 'Honesty and transparency in every conversation — we tell you what you need to hear, not what you want to.',
+  },
+];
+
 export default function AboutPageContent() {
   return (
     <article className="flex flex-col w-full">
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-purple-50 opacity-80" />
-        <div className="container relative mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6">
-            About <span className="text-purple-600">Wyloks</span>
+
+      {/* ── Hero ── */}
+      <section className="relative bg-cream min-h-[60vh] flex items-center px-6 sm:px-14 lg:px-24 py-24 overflow-hidden">
+        <div className="absolute left-6 sm:left-14 lg:left-24 top-0 bottom-0 w-px bg-ink/6" />
+        <div className="relative w-full max-w-7xl">
+          <p className="label-tag mb-10 animate-fade-up">About us</p>
+          <h1
+            className="display-hero text-ink animate-fade-up-d1"
+            style={{ fontSize: 'clamp(3rem,9vw,7rem)', fontFamily: 'var(--font-display)' }}
+          >
+            A consultancy with<br />
+            <span style={{ color: 'var(--terra)' }}>genuine expertise.</span>
           </h1>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Wyloks is a registered UK company focused on helping businesses succeed online. 
-            We specialize in IT consultation, software development, and performance-driven marketing strategies.
+          <span className="rule block mt-12 mb-10 animate-fade-up-d2" />
+          <p
+            className="font-body text-base leading-relaxed max-w-xl animate-fade-up-d2"
+            style={{ color: 'var(--ink-muted)' }}
+          >
+            Wyloks is a registered UK company focused on helping businesses succeed online.
+            We specialise in IT consultation, software development, and performance-driven
+            marketing strategies.
           </p>
         </div>
       </section>
 
-      {/* Mission & Vision */}
-      <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
-            <div className="bg-purple-50 rounded-2xl p-8 sm:p-10 transform hover:scale-105 transition-transform duration-300">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">Our Mission</h2>
-              <p className="text-lg text-gray-600 leading-relaxed">
-                To empower businesses with innovative digital solutions that drive growth, efficiency, 
-                and success in the modern digital landscape.
-              </p>
-            </div>
-            <div className="bg-purple-50 rounded-2xl p-8 sm:p-10 transform hover:scale-105 transition-transform duration-300">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">Our Vision</h2>
-              <p className="text-lg text-gray-600 leading-relaxed">
-                To be the trusted technology partner for businesses worldwide, known for delivering 
-                excellence in IT consultation and digital transformation.
-              </p>
-            </div>
+      {/* ── Mission & Vision ── */}
+      <section style={{ backgroundColor: 'var(--ink)' }} className="px-6 sm:px-14 lg:px-24 py-24">
+        <div className="max-w-7xl mx-auto">
+          <p className="label-tag mb-14" style={{ color: 'rgba(245,241,234,0.3)' }}>Our purpose</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px" style={{ backgroundColor: 'rgba(245,241,234,0.08)' }}>
+            {[
+              {
+                label: 'Mission',
+                body: 'To empower businesses with innovative digital solutions that drive growth, efficiency, and success in the modern digital landscape.',
+              },
+              {
+                label: 'Vision',
+                body: 'To be the trusted technology partner for businesses worldwide — known for delivering excellence in IT consultation and digital transformation.',
+              },
+            ].map((item) => (
+              <div
+                key={item.label}
+                className="card-dark p-10 sm:p-14"
+                style={{ backgroundColor: 'var(--ink)' }}
+              >
+                <p className="label-tag mb-6" style={{ color: 'rgba(245,241,234,0.3)' }}>{item.label}</p>
+                <p
+                  className="display-section leading-snug"
+                  style={{ fontSize: 'clamp(1.4rem,3vw,2rem)', color: 'var(--cream)', fontFamily: 'var(--font-display)' }}
+                >
+                  &ldquo;{item.body}&rdquo;
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Core Values */}
-      <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
-        <div className="container mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-12 text-center">
-            Our Core Values
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
-            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div className="bg-purple-100 rounded-full w-12 h-12 flex items-center justify-center mb-6">
-                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
+      {/* ── Core Values ── */}
+      <section style={{ backgroundColor: 'var(--cream-dark)' }} className="px-6 sm:px-14 lg:px-24 py-24">
+        <div className="max-w-7xl mx-auto">
+          <p className="label-tag mb-16">Core values</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            {values.map((v) => (
+              <div key={v.num} className="border-t pt-8" style={{ borderColor: 'rgba(22,18,11,0.1)' }}>
+                <span
+                  className="block mb-6"
+                  style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', fontWeight: 700, fontSize: '3rem', color: 'var(--terra)', lineHeight: 1 }}
+                >
+                  {v.num}
+                </span>
+                <h3 className="font-body font-semibold text-ink text-lg mb-3">{v.title}</h3>
+                <p className="font-body text-sm leading-relaxed" style={{ color: 'var(--ink-muted)' }}>{v.body}</p>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Innovation</h3>
-              <p className="text-gray-600 leading-relaxed">
-                We constantly evolve and adapt to new technologies to provide cutting-edge solutions.
-              </p>
-            </div>
-            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div className="bg-purple-100 rounded-full w-12 h-12 flex items-center justify-center mb-6">
-                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Excellence</h3>
-              <p className="text-gray-600 leading-relaxed">
-                We strive for excellence in every project, delivering high-quality solutions.
-              </p>
-            </div>
-            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div className="bg-purple-100 rounded-full w-12 h-12 flex items-center justify-center mb-6">
-                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Integrity</h3>
-              <p className="text-gray-600 leading-relaxed">
-                We maintain the highest standards of honesty and transparency in all our dealings.
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-600 to-purple-700">
-        <div className="container mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-8">
-            Ready to Transform Your Business?
-          </h2>
-          <Link
-            href="/contact"
-            className="inline-block bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold text-lg 
-                     hover:bg-purple-50 transform hover:scale-105 transition-all duration-200 
-                     shadow-lg hover:shadow-xl"
+      {/* ── CTA ── */}
+      <section style={{ backgroundColor: 'var(--ink-mid)' }} className="px-6 sm:px-14 lg:px-24 py-28">
+        <div className="max-w-7xl mx-auto text-center">
+          <p className="label-tag mb-8" style={{ color: 'rgba(245,241,234,0.3)' }}>Work with us</p>
+          <h2
+            className="display-hero mb-12"
+            style={{ fontSize: 'clamp(2.5rem,6vw,5rem)', color: 'var(--cream)', fontFamily: 'var(--font-display)' }}
           >
-            Get in Touch
+            Ready to transform<br />
+            <span style={{ color: 'var(--terra)' }}>your business?</span>
+          </h2>
+          <Link href="/contact" style={{ backgroundColor: 'var(--terra)', color: 'var(--cream)' }} className="btn-ink">
+            Get in touch
           </Link>
         </div>
       </section>
+
     </article>
   );
 }
