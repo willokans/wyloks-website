@@ -17,7 +17,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
+    <div className="flex min-h-screen flex-col bg-cream">
       <Header />
       <main className="flex-grow pt-16">
         {children}

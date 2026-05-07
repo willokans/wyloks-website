@@ -1,26 +1,52 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ServiceCard } from '@/components/services/ServiceCard';
+import ServiceCard from '@/components/services/ServiceCard';
+
+jest.mock('next/dynamic', () => (_fn: unknown, _opts: unknown) => {
+  const MockIcon = () => <svg data-testid="service-icon" />;
+  MockIcon.displayName = 'MockIcon';
+  return MockIcon;
+});
+
+const base = {
+  title: 'IT Consultation',
+  description: 'Expert technology guidance.',
+  iconType: 'ITConsulting' as const,
+};
 
 describe('ServiceCard', () => {
-  const mockProps = {
-    title: 'Test Service',
-    description: 'Test Description',
-    icon: <svg data-testid="test-icon" />
-  };
-
-  it('renders the service card with all props', () => {
-    render(<ServiceCard {...mockProps} />);
-    
-    expect(screen.getByText(mockProps.title)).toBeInTheDocument();
-    expect(screen.getByText(mockProps.description)).toBeInTheDocument();
-    expect(screen.getByTestId('test-icon')).toBeInTheDocument();
+  it('renders the service title', () => {
+    render(<ServiceCard {...base} />);
+    expect(screen.getByText('IT Consultation')).toBeInTheDocument();
   });
 
-  it('applies the correct styling classes', () => {
-    render(<ServiceCard {...mockProps} />);
-    
-    const card = screen.getByRole('article');
-    expect(card).toHaveClass('bg-white', 'rounded-2xl', 'p-6', 'sm:p-8', 'shadow-lg', 'hover:shadow-xl', 'transition-all', 'duration-300');
+  it('renders the service description', () => {
+    render(<ServiceCard {...base} />);
+    expect(screen.getByText('Expert technology guidance.')).toBeInTheDocument();
+  });
+
+  it('renders 01 for ITConsulting', () => {
+    render(<ServiceCard {...base} />);
+    expect(screen.getByText('01')).toBeInTheDocument();
+  });
+
+  it('renders 02 for SoftwareDevelopment', () => {
+    render(<ServiceCard {...base} iconType="SoftwareDevelopment" title="Software Development" />);
+    expect(screen.getByText('02')).toBeInTheDocument();
+  });
+
+  it('renders 03 for DigitalMarketing', () => {
+    render(<ServiceCard {...base} iconType="DigitalMarketing" title="Digital Marketing" />);
+    expect(screen.getByText('03')).toBeInTheDocument();
+  });
+
+  it('renders the icon', () => {
+    render(<ServiceCard {...base} />);
+    expect(screen.getByTestId('service-icon')).toBeInTheDocument();
+  });
+
+  it('applies the card-editorial CSS class', () => {
+    const { container } = render(<ServiceCard {...base} />);
+    expect(container.firstChild).toHaveClass('card-editorial');
   });
 });

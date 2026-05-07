@@ -22,37 +22,47 @@ export default function ServicesContent() {
   }, []);
 
   return (
-    <div className="bg-gray-50">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+    <div style={{ backgroundColor: 'var(--cream)' }}>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <ServicesHero />
 
-        <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="py-16 lg:py-20">
           {loading ? (
-            <div className="col-span-full flex justify-center">
-              <div className="animate-pulse text-lg">Loading services...</div>
+            <div className="flex justify-center py-20">
+              <div
+                className="h-7 w-7 animate-spin rounded-full border-2"
+                style={{ borderColor: 'rgba(22,18,11,0.1)', borderTopColor: 'var(--terra)' }}
+              />
             </div>
           ) : (
-            services.map((service, index) => (
-              <ServiceCard
-                key={index}
-                title={service.title}
-                description={service.description}
-                iconType={service.iconType}
-              />
-            ))
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ backgroundColor: 'rgba(22,18,11,0.08)' }}>
+              {services.map((service, index) => (
+                <ServiceCard
+                  key={index}
+                  title={service.title}
+                  description={service.description}
+                  iconType={service.iconType}
+                />
+              ))}
+            </div>
           )}
         </div>
 
-        <div className="mt-20 text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Ready to Transform Your Business?
-          </h2>
-          <div className="mt-8">
-            <Link
-              href="/contact"
-              className="inline-block rounded-lg bg-purple-600 px-6 py-3 text-lg font-medium text-white shadow-sm hover:bg-purple-700 transition-colors"
+        {/* CTA */}
+        <div className="mb-20">
+          <div
+            className="px-10 sm:px-16 py-16 text-center"
+            style={{ backgroundColor: 'var(--ink-mid)' }}
+          >
+            <p className="label-tag mb-8" style={{ color: 'rgba(245,241,234,0.3)' }}>Let&apos;s talk</p>
+            <h2
+              className="display-section mb-10"
+              style={{ fontSize: 'clamp(2rem,5vw,3.5rem)', color: 'var(--cream)', fontFamily: 'var(--font-display)' }}
             >
-              Get Started Today
+              Ready to get started?
+            </h2>
+            <Link href="/contact" style={{ backgroundColor: 'var(--terra)', color: 'var(--cream)' }} className="btn-ink">
+              Start the conversation
             </Link>
           </div>
         </div>

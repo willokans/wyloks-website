@@ -5,146 +5,135 @@ import Link from 'next/link';
 import { useCookieConsent, type CookiePreferences } from '@/hooks/useCookieConsent';
 
 export default function CookieConsent() {
-  const { preferences, updatePreferences, loaded } = useCookieConsent();
-  const [showBanner, setShowBanner] = useState(true);
+  const { preferences, updatePreferences, loaded, consentGiven } = useCookieConsent();
   const [showPreferences, setShowPreferences] = useState(false);
 
-  if (!loaded || !showBanner) return null;
+  if (!loaded || consentGiven) return null;
 
   const handleAcceptAll = () => {
-    updatePreferences({
-      analytics: true,
-      marketing: true
-    });
-    setShowBanner(false);
+    updatePreferences({ analytics: true, marketing: true });
     setShowPreferences(false);
   };
 
   const handleReject = () => {
-    updatePreferences({
-      analytics: false,
-      marketing: false
-    });
-    setShowBanner(false);
+    updatePreferences({ analytics: false, marketing: false });
     setShowPreferences(false);
   };
 
   const handleSavePreferences = () => {
     updatePreferences(preferences);
-    setShowBanner(false);
     setShowPreferences(false);
   };
 
   const handleTogglePreference = (key: keyof CookiePreferences) => {
-    if (key === 'essential') return; // Essential cookies cannot be toggled
-    updatePreferences({
-      [key]: !preferences[key]
-    });
+    if (key === 'essential') return;
+    updatePreferences({ [key]: !preferences[key] });
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-gray-900 text-white p-4 shadow-lg z-50">
-      <div className="max-w-7xl mx-auto">
+    <div
+      className="fixed bottom-0 left-0 right-0 z-50 border-t"
+      style={{ backgroundColor: 'var(--ink)', borderColor: 'rgba(245,241,234,0.1)' }}
+    >
+      <div className="max-w-7xl mx-auto px-6 sm:px-14 lg:px-24 py-5">
         {!showPreferences ? (
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex-grow">
-              <p className="text-sm">
-                We use cookies to enhance your experience. Some cookies are essential for the site to work, while others help us improve your experience.{' '}
-                <Link href="/cookie-policy" className="text-purple-400 hover:text-purple-300 underline">
-                  Learn more
-                </Link>
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-5">
+            <p className="font-body text-sm leading-relaxed flex-grow" style={{ color: 'rgba(245,241,234,0.6)' }}>
+              We use cookies to enhance your experience. Some are essential for the site to work;
+              others help us understand how it&apos;s used.{' '}
+              <Link
+                href="/cookie-policy"
+                className="transition-colors duration-200"
+                style={{ color: 'var(--terra)', textDecoration: 'none' }}
+                onMouseEnter={(e) => { (e.target as HTMLElement).style.color = 'var(--cream)'; }}
+                onMouseLeave={(e) => { (e.target as HTMLElement).style.color = 'var(--terra)'; }}
+              >
+                Cookie policy
+              </Link>
+            </p>
+            <div className="flex items-center gap-3 flex-shrink-0">
               <button
                 onClick={() => setShowPreferences(true)}
-                className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                className="font-mono text-xs tracking-widest uppercase px-4 py-2.5 transition-colors duration-200"
+                style={{ color: 'rgba(245,241,234,0.5)', border: '1px solid rgba(245,241,234,0.15)' }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--cream)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(245,241,234,0.4)'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(245,241,234,0.5)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(245,241,234,0.15)'; }}
               >
-                Cookie Settings
+                Manage
               </button>
               <button
                 onClick={handleReject}
-                className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                className="font-mono text-xs tracking-widest uppercase px-4 py-2.5 transition-colors duration-200"
+                style={{ color: 'rgba(245,241,234,0.5)', border: '1px solid rgba(245,241,234,0.15)' }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--cream)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(245,241,234,0.4)'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(245,241,234,0.5)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(245,241,234,0.15)'; }}
               >
-                Reject All
+                Reject all
               </button>
               <button
                 onClick={handleAcceptAll}
-                className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                className="font-mono text-xs tracking-widest uppercase px-4 py-2.5 transition-colors duration-200"
+                style={{ backgroundColor: 'var(--terra)', color: 'var(--cream)', border: '1px solid var(--terra)' }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'var(--terra-dark)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--terra-dark)'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'var(--terra)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--terra)'; }}
               >
-                Accept All
+                Accept all
               </button>
             </div>
           </div>
         ) : (
-          <div className="space-y-4">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">Cookie Preferences</h3>
-                <button
-                  onClick={() => setShowPreferences(false)}
-                  className="text-gray-400 hover:text-white"
-                >
-                  ✕
-                </button>
-              </div>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium">Essential Cookies</p>
-                    <p className="text-sm text-gray-400">Required for the website to function properly</p>
-                  </div>
-                  <div className="relative">
-                    <input
-                      type="checkbox"
-                      checked={preferences.essential}
-                      disabled
-                      className="opacity-50 cursor-not-allowed"
-                    />
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium">Analytics Cookies</p>
-                    <p className="text-sm text-gray-400">Help us improve our website</p>
-                  </div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      checked={preferences.analytics}
-                      onChange={() => handleTogglePreference('analytics')}
-                      className="cursor-pointer"
-                    />
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium">Marketing Cookies</p>
-                    <p className="text-sm text-gray-400">Used for targeted advertising</p>
-                  </div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      checked={preferences.marketing}
-                      onChange={() => handleTogglePreference('marketing')}
-                      className="cursor-pointer"
-                    />
-                  </div>
-                </div>
-              </div>
+          <div className="space-y-6 py-2">
+            <div className="flex items-center justify-between">
+              <p className="label-tag" style={{ color: 'rgba(245,241,234,0.35)' }}>Cookie Preferences</p>
+              <button
+                onClick={() => setShowPreferences(false)}
+                className="font-mono text-xs transition-colors duration-200"
+                style={{ color: 'rgba(245,241,234,0.4)' }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--cream)'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(245,241,234,0.4)'; }}
+              >
+                ✕
+              </button>
             </div>
-            <div className="flex justify-end gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-px" style={{ backgroundColor: 'rgba(245,241,234,0.08)' }}>
+              {[
+                { key: 'essential' as keyof CookiePreferences, label: 'Essential', desc: 'Required for the site to function', locked: true },
+                { key: 'analytics' as keyof CookiePreferences, label: 'Analytics', desc: 'Help us understand how the site is used', locked: false },
+                { key: 'marketing' as keyof CookiePreferences, label: 'Marketing', desc: 'Used for targeted advertising', locked: false },
+              ].map(({ key, label, desc, locked }) => (
+                <div key={key} className="p-5 flex items-start justify-between gap-4" style={{ backgroundColor: 'var(--ink)' }}>
+                  <div>
+                    <p className="font-body text-sm font-semibold mb-1" style={{ color: 'var(--cream)' }}>{label}</p>
+                    <p className="font-body text-xs leading-relaxed" style={{ color: 'rgba(245,241,234,0.45)' }}>{desc}</p>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={preferences[key]}
+                    disabled={locked}
+                    onChange={() => handleTogglePreference(key)}
+                    className={locked ? 'opacity-40 cursor-not-allowed mt-0.5 flex-shrink-0' : 'cursor-pointer mt-0.5 flex-shrink-0 accent-terra'}
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="flex justify-end gap-3">
               <button
                 onClick={handleReject}
-                className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                className="font-mono text-xs tracking-widest uppercase px-4 py-2.5 transition-colors duration-200"
+                style={{ color: 'rgba(245,241,234,0.5)', border: '1px solid rgba(245,241,234,0.15)' }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--cream)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(245,241,234,0.4)'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(245,241,234,0.5)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(245,241,234,0.15)'; }}
               >
-                Reject All
+                Reject all
               </button>
               <button
                 onClick={handleSavePreferences}
-                className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                className="font-mono text-xs tracking-widest uppercase px-4 py-2.5 transition-colors duration-200"
+                style={{ backgroundColor: 'var(--terra)', color: 'var(--cream)', border: '1px solid var(--terra)' }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'var(--terra-dark)'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'var(--terra)'; }}
               >
-                Save Preferences
+                Save preferences
               </button>
             </div>
           </div>

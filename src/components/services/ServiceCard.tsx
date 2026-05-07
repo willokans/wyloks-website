@@ -2,34 +2,52 @@
 
 import React from 'react';
 import dynamic from 'next/dynamic';
-import LoadingSpinner from '@/components/LoadingSpinner';
 import { type ServiceProps, type IconType } from '@/types/services';
 
 const icons: Record<IconType, React.ComponentType> = {
-  ITConsulting: dynamic(() => import('./ServiceIcons').then(mod => mod.ITConsultingIcon), {
-    loading: () => <LoadingSpinner />,
-    ssr: false
-  }),
-  SoftwareDevelopment: dynamic(() => import('./ServiceIcons').then(mod => mod.SoftwareDevelopmentIcon), {
-    loading: () => <LoadingSpinner />,
-    ssr: false
-  }),
-  DigitalMarketing: dynamic(() => import('./ServiceIcons').then(mod => mod.DigitalMarketingIcon), {
-    loading: () => <LoadingSpinner />,
-    ssr: false
-  })
+  ITConsulting: dynamic(() => import('./ServiceIcons').then(mod => mod.ITConsultingIcon), { ssr: false }),
+  SoftwareDevelopment: dynamic(() => import('./ServiceIcons').then(mod => mod.SoftwareDevelopmentIcon), { ssr: false }),
+  DigitalMarketing: dynamic(() => import('./ServiceIcons').then(mod => mod.DigitalMarketingIcon), { ssr: false }),
+};
+
+const iconIndexMap: Record<IconType, string> = {
+  ITConsulting: '01',
+  SoftwareDevelopment: '02',
+  DigitalMarketing: '03',
 };
 
 export default function ServiceCard({ title, description, iconType }: ServiceProps) {
   const Icon = icons[iconType];
 
   return (
-    <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-shadow">
-      <div className="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
-        <Icon />
+    <div
+      className="card-editorial group relative"
+      style={{ cursor: 'default' }}
+    >
+      <div className="flex items-start justify-between mb-8">
+        <span
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontStyle: 'italic',
+            fontWeight: 700,
+            fontSize: '2rem',
+            color: 'var(--terra)',
+            lineHeight: 1,
+          }}
+        >
+          {iconIndexMap[iconType]}
+        </span>
+        <div
+          className="w-9 h-9 flex items-center justify-center"
+          style={{ color: 'var(--ink-muted)' }}
+        >
+          <Icon />
+        </div>
       </div>
-      <h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
-      <p className="text-gray-600">{description}</p>
+      <h3 className="font-body font-semibold text-ink text-base mb-3">{title}</h3>
+      <p className="font-body text-sm leading-relaxed" style={{ color: 'var(--ink-muted)' }}>
+        {description}
+      </p>
     </div>
   );
 }
