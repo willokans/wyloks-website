@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import Navigation from './Navigation';
 
 const Header: React.FC = () => {
@@ -16,19 +17,15 @@ const Header: React.FC = () => {
     >
       <div className="px-6 sm:px-14 lg:px-24">
         <div className="flex justify-between items-center h-16">
-          <Link
-            href="/"
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontStyle: 'italic',
-              fontWeight: 600,
-              fontSize: '1.35rem',
-              color: 'var(--ink)',
-              letterSpacing: '-0.01em',
-              textDecoration: 'none',
-            }}
-          >
-            Wyloks<span style={{ color: 'var(--terra)' }}>.</span>
+          <Link href="/" aria-label="Wyloks — home">
+            <Image
+              src="/logo.svg"
+              alt="Wyloks"
+              width={148}
+              height={32}
+              priority
+              style={{ height: '32px', width: 'auto' }}
+            />
           </Link>
           <Navigation />
         </div>

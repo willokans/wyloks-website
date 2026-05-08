@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Concept 2: "Hex Badge"
+  W mark contained within a flat-top hexagon — acts as a brandmark/seal.
+  Cream W strokes on ink fill, terra inner V.
+  Paired with elegant italic serif wordmark.
+  Radiates: established, trustworthy, premium.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 56" role="img" aria-label="Wyloks">
+  <title>Wyloks</title>
+  <defs>
+    <style>
+      .wm2 { font-family: 'Cormorant Garamond', 'Cormorant', Georgia, serif;
+             font-size: 28px; font-style: italic;
+             fill: #16120b; letter-spacing: 0.01em; }
+    </style>
+    <!-- Clip W strokes to hexagon shape -->
+    <clipPath id="hex-clip">
+      <polygon points="28,2 52,16 52,44 28,58 4,44 4,16"/>
+    </clipPath>
+  </defs>
+
+  <!-- Hexagon badge background -->
+  <polygon points="28,2 52,16 52,44 28,58 4,44 4,16" fill="#16120b"/>
+
+  <!-- W strokes clipped inside hexagon: cream outer, terra inner -->
+  <path d="M10,16 L18,46 L26,28 L34,46 L46,16"
+        fill="none" stroke="#f5f1ea" stroke-width="4"
+        stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+        clip-path="url(#hex-clip)"/>
+  <path d="M18,46 L26,28 L34,46"
+        fill="none" stroke="#c9622f" stroke-width="4"
+        stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+        clip-path="url(#hex-clip)"/>
+
+  <!-- Thin separator -->
+  <line x1="68" y1="12" x2="68" y2="44"
+        stroke="#16120b" stroke-width="0.75" opacity="0.2"/>
+
+  <!-- Italic serif wordmark -->
+  <text x="78" y="38" class="wm2">Wyloks<tspan fill="#c9622f" dx="1">.</tspan></text>
+</svg>
