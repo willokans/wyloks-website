@@ -163,7 +163,7 @@ export const ContactForm = () => {
 
       {showSuccessMessage && (
         <div className="p-4 border text-sm" style={{ borderColor: 'var(--terra)', color: 'var(--terra)', backgroundColor: 'rgba(201,98,47,0.05)' }}>
-          Thank you for your message — we&apos;ll be in touch within 24 hours.
+          Thank you for your message — we&apos;ll be in touch within 48 hours.
         </div>
       )}
       {errorMessage && (
