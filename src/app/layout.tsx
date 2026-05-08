@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     template: '%s | Wyloks',
     default: 'Wyloks — IT Consultation & Digital Growth',
   },
-  description: 'A UK-based consultancy helping businesses build better digital products.',
+  description: 'A UK-based consultancy helping businesses build better digital products through IT consultation and digital growth.',
   keywords: ['IT Consultation', 'Software Development', 'Digital Marketing', 'Affiliate Marketing'],
   authors: [{ name: 'Wyloks Ltd' }],
   creator: 'Wyloks Ltd',

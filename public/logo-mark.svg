@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38 48" role="img" aria-label="Wyloks">
+  <title>Wyloks</title>
+  <!-- W mark: outer strokes ink, inner V terracotta -->
+  <path d="M4 5 L12 43 L19 22 L26 43 L34 5"
+        fill="none" stroke="#16120b" stroke-width="3"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M12 43 L19 22 L26 43"
+        fill="none" stroke="#c9622f" stroke-width="3"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
