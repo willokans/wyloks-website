@@ -31,7 +31,7 @@ export default function ContactPage() {
           </h1>
           <span className="rule-dark block mt-12 mb-10" />
           <p className="font-body text-base leading-relaxed max-w-lg" style={{ color: 'rgba(245,241,234,0.5)' }}>
-            Tell us about your project and we&apos;ll get back to you within 24 hours.
+            Tell us about your project and we&apos;ll get back to you within 48 hours.
             No hard sell — just a straight conversation.
           </p>
         </div>
@@ -61,7 +61,7 @@ export default function ContactPage() {
                 </div>
                 <div className="border-t pt-5" style={{ borderColor: 'rgba(22,18,11,0.1)' }}>
                   <p className="font-body text-xs uppercase tracking-widest mb-1" style={{ color: 'var(--ink-muted)' }}>Response time</p>
-                  <p className="font-body text-sm text-ink">Within 24 hours</p>
+                  <p className="font-body text-sm text-ink">Within 48 hours</p>
                 </div>
               </div>
             </div>
