@@ -172,7 +172,7 @@ with sync_playwright() as p:
         expect(page.get_by_role("button", name="Send Message")).to_be_visible())
 
     test("Contact: email address in sidebar", lambda:
-        expect(page.locator("section").get_by_role("link", name="info@wyloksltd.com")).to_be_visible())
+        expect(page.locator("section").get_by_role("link", name="info@wyloks.com")).to_be_visible())
 
     test("Contact: London location in sidebar", lambda:
         expect(page.get_by_text("London, UK")).to_be_visible())

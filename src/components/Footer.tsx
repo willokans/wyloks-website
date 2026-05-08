@@ -35,11 +35,11 @@ const Footer = () => {
               A UK-based consultancy helping businesses build better digital products and grow online.
             </p>
             <a
-              href="mailto:info@wyloksltd.com"
+              href="mailto:info@wyloks.com"
               className="mt-4 inline-block text-sm transition-colors duration-200"
               style={{ color: 'var(--terra)', textDecoration: 'none' }}
             >
-              info@wyloksltd.com
+              info@wyloks.com
             </a>
           </div>
 
