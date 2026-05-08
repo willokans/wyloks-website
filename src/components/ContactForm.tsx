@@ -102,9 +102,16 @@ export const ContactForm = () => {
     setValidationErrors({});
 
     try {
-      const recaptchaValue = await executeRecaptcha();
+      let recaptchaValue: string | null = null;
+      try {
+        recaptchaValue = await executeRecaptcha();
+      } catch {
+        setErrorMessage('reCAPTCHA failed to load. Please refresh the page and try again.');
+        setIsSubmitting(false);
+        return;
+      }
       if (!recaptchaValue) {
-        setErrorMessage('Please complete the reCAPTCHA verification');
+        setErrorMessage('Please complete the reCAPTCHA verification.');
         setIsSubmitting(false);
         return;
       }
