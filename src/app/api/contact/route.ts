@@ -143,9 +143,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ errors, success: false }, { status: 400 });
     }
 
-    console.error('Contact form error:', error);
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('Contact form error:', message, error);
     return NextResponse.json(
-      { message: 'An error occurred. Please try again later.', success: false },
+      { message: 'An error occurred. Please try again later.', success: false, debug: message },
       { status: 500 }
     );
   }
