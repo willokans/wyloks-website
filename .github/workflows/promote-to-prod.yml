@@ -24,7 +24,7 @@ jobs:
           lfs: false
           submodules: false
           set-safe-directory: true
-          token: ${{ secrets.GH_PAT }}
+          token: ${{ secrets.GT_PAT }}
 
       - name: Fetch dev branch
         run: git fetch origin dev
@@ -45,4 +45,4 @@ jobs:
       - name: Push changes to main
         if: ${{ steps.check_changes.outputs.has_changes == 'true' }}
         run: |
-          git push https://${{ secrets.GH_PAT }}@github.com/willokans/wyloks-website.git main
+          git push https://${{ secrets.GT_PAT }}@github.com/willokans/wyloks-website.git main
