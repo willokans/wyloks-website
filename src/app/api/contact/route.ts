@@ -99,22 +99,34 @@ export async function POST(request: Request) {
       );
     }
 
-    const transporter = createTransporter();
+    const smtpReady = process.env.SMTP_PASS && process.env.SMTP_USER;
 
-    await transporter.sendMail({
-      from: `"Wyloks Contact Form" <${process.env.SMTP_USER}>`,
-      to: 'info@wyloks.com',
-      replyTo: validatedData.email,
-      subject: `[Wyloks] ${validatedData.subject} — ${validatedData.name}`,
-      html: buildEmailHtml(validatedData),
-      text: [
-        `Name: ${validatedData.name}`,
-        `Email: ${validatedData.email}`,
-        validatedData.phone ? `Phone: ${validatedData.phone}` : '',
-        `Subject: ${validatedData.subject}`,
-        `\nMessage:\n${validatedData.message}`,
-      ].filter(Boolean).join('\n'),
-    });
+    if (smtpReady) {
+      const transporter = createTransporter();
+      await transporter.sendMail({
+        from: `"Wyloks Contact Form" <${process.env.SMTP_USER}>`,
+        to: 'info@wyloks.com',
+        replyTo: validatedData.email,
+        subject: `[Wyloks] ${validatedData.subject} — ${validatedData.name}`,
+        html: buildEmailHtml(validatedData),
+        text: [
+          `Name: ${validatedData.name}`,
+          `Email: ${validatedData.email}`,
+          validatedData.phone ? `Phone: ${validatedData.phone}` : '',
+          `Subject: ${validatedData.subject}`,
+          `\nMessage:\n${validatedData.message}`,
+        ].filter(Boolean).join('\n'),
+      });
+    } else {
+      // SMTP not configured — log submission locally (dev only)
+      console.log('[Contact form submission]', {
+        name: validatedData.name,
+        email: validatedData.email,
+        phone: validatedData.phone,
+        subject: validatedData.subject,
+        message: validatedData.message,
+      });
+    }
 
     return NextResponse.json({
       message: "Thank you for your message! We'll get back to you soon.",
