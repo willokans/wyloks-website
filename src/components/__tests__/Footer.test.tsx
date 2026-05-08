@@ -16,8 +16,8 @@ describe('Footer', () => {
 
   it('renders a mailto link for the company email', () => {
     render(<Footer />);
-    const link = screen.getByRole('link', { name: /info@wyloksltd\.com/i });
-    expect(link).toHaveAttribute('href', 'mailto:info@wyloksltd.com');
+    const link = screen.getByRole('link', { name: /info@wyloks\.com/i });
+    expect(link).toHaveAttribute('href', 'mailto:info@wyloks.com');
   });
 
   it('renders navigation links with correct hrefs', () => {

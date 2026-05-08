@@ -49,10 +49,10 @@ export default function ContactPage() {
                 <div className="border-t pt-5" style={{ borderColor: 'rgba(22,18,11,0.1)' }}>
                   <p className="font-body text-xs uppercase tracking-widest mb-1" style={{ color: 'var(--ink-muted)' }}>Email</p>
                   <a
-                    href="mailto:info@wyloksltd.com"
+                    href="mailto:info@wyloks.com"
                     className="link-terra font-body text-sm"
                   >
-                    info@wyloksltd.com
+                    info@wyloks.com
                   </a>
                 </div>
                 <div className="border-t pt-5" style={{ borderColor: 'rgba(22,18,11,0.1)' }}>
