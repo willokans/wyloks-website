@@ -102,7 +102,7 @@ export const ContactForm = () => {
     setValidationErrors({});
 
     try {
-      let recaptchaValue: string | null = null;
+      let recaptchaValue: string | null | undefined = null;
       try {
         recaptchaValue = await executeRecaptcha();
       } catch {
